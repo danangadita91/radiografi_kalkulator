@@ -83,14 +83,17 @@ class _WaktuPaparanState extends State<WaktuPaparan> {
   String lnFlutter(){
     double thkVal = double.tryParse(_thk.text) ?? 0;
     double wallVal = double.tryParse(_wall.toString()) ?? 0;
-    double sfdVal = double.tryParse(_sfd.text) ?? 0;
     double currieVal = double.tryParse(_currie.text)?? 0;
     double filmVal = double.tryParse(_selectedFilm.value.toString()) ?? 0;
+    double sfdVal = double.tryParse(_sfd.text) ?? 0;
     double logN = exp(thkVal/25.4*wallVal);
-    double exposeT = sexagesimal(logN*6.5*sfdVal*sfdVal/currieVal/60*filmVal);
-    String hasilLn = '$logN';
-    return hasilLn;
+    double expTime = logN*(6.5*sfdVal*sfdVal/currieVal/60)*filmVal;
+    String exposeTime = '$expTime';
+    return exposeTime;
+
   }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -518,6 +521,7 @@ class _WaktuPaparanState extends State<WaktuPaparan> {
     );
   }
 }
+
 class ListItem {
   double value;
   String name;
