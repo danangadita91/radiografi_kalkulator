@@ -8,7 +8,6 @@ import 'DataPipa.dart';
 import 'HomePage.dart';
 import 'Pewaktu.dart';
 import 'WaktuParo.dart';
-import 'dart:math' as math;
 
 class WaktuPaparan extends StatefulWidget {
   @override
@@ -78,8 +77,6 @@ class _WaktuPaparanState extends State<WaktuPaparan> {
   }
   //Baris 6
   //Calculate Brain
-
-
   String lnFlutter(){
     double thkVal = double.tryParse(_thk.text) ?? 0;
     double wallVal = double.tryParse(_wall.toString()) ?? 0;
@@ -90,9 +87,23 @@ class _WaktuPaparanState extends State<WaktuPaparan> {
     double expTime = logN*(6.5*sfdVal*sfdVal/currieVal/60)*filmVal;
     String exposeTime = '$expTime';
     return exposeTime;
-
   }
+  String sexaGesimal(){
+    double exposeVal = double.tryParse(lnFlutter());
+    double latDegreeFrac = exposeVal;
+    int degrees = latDegreeFrac.toInt();
 
+    double fracDegrees = latDegreeFrac - degrees;
+    double minutFrac = 60 * fracDegrees;
+    int minutes = minutFrac.toInt();
+
+    double fracMinutes = minutFrac - minutes;
+    double secondsFrac = 60 * fracMinutes;
+    int seconds = secondsFrac.toInt().round();
+    String dec2Sexa = '$degrees' + ' Menit'' - '+'$minutes'+' Detik'' - '+'$seconds''Milidetik';
+
+    return dec2Sexa;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -488,7 +499,7 @@ class _WaktuPaparanState extends State<WaktuPaparan> {
                   Text('Jarak Sumber ke Film = '+_sfd.text +' Inch',style: LinkEmail),
                   Text('Aktifitas = '+_currie.text +' Currie',style: LinkEmail),
                   Text('Jenis Film = '+_selectedFilm.name +' Faktor = '+_selectedFilm.value.toString(),style: LinkEmail,),
-                  Text('lnFLutter = '+lnFlutter())
+                  Text('lnFLutter = '+sexaGesimal())
                 ],
               ),
             ),
