@@ -81,44 +81,41 @@ class DataPipa extends StatelessWidget {
             ),
             SizedBox(height: 60),
             //Notes
-            Container(
-              margin: EdgeInsets.all(10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Text('*Notes :',
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Text('*Notes :',
+                    style: FormText,
+                    textAlign: TextAlign.start
+                ),
+                SizedBox(width: 5),
+                Icon(Icons.circle,
+                    color: Colors.red
+                ),
+                Text('X2',
+                    style: FormText
+                ),
+                SizedBox(width: 10),
+                Icon(Icons.circle,
+                    color: Colors.green
+                ),
+                Text('Standard',
+                    style: FormText
+                ),
+                Spacer(),
+                RichText(
+                  text: TextSpan(
+                      text: 'Unit :',
                       style: FormText,
-                      textAlign: TextAlign.start
+                      children: <TextSpan>[
+                        TextSpan(
+                            text:'Schedule (mm)',
+                            style: FormText
+                        ),
+                      ]
                   ),
-                  SizedBox(width: 5),
-                  Icon(Icons.circle,
-                      color: Colors.red
-                  ),
-                  Text('X2',
-                      style: FormText
-                  ),
-                  SizedBox(width: 10),
-                  Icon(Icons.circle,
-                      color: Colors.green
-                  ),
-                  Text('Standard',
-                      style: FormText
-                  ),
-                  Spacer(),
-                  RichText(
-                    text: TextSpan(
-                        text: 'Unit :',
-                        style: FormText,
-                        children: <TextSpan>[
-                          TextSpan(
-                              text:'Schedule (mm)',
-                              style: FormText
-                          ),
-                        ]
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
             //PipeData App
             Row(
