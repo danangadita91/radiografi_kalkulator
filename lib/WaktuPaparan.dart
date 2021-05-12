@@ -77,32 +77,32 @@ class _WaktuPaparanState extends State<WaktuPaparan> {
   }
   //Baris 6
   //Calculate Brain
+  String displayTest = '0';
+  double expTime;
   String lnFlutter(){
     double thkVal = double.tryParse(_thk.text) ?? 0;
     double wallVal = double.tryParse(_wall.toString()) ?? 0;
     double currieVal = double.tryParse(_currie.text)?? 0;
     double filmVal = double.tryParse(_selectedFilm.value.toString()) ?? 0;
     double sfdVal = double.tryParse(_sfd.text) ?? 0;
-    double logN = exp(thkVal/25.4*wallVal);
-    double expTime = logN*(6.5*sfdVal*sfdVal/currieVal/60)*filmVal;
-    String exposeTime = '$expTime';
-    return exposeTime;
+    double natLog = thkVal/ 25.4 *wallVal;
+    double logN = exp(natLog);
+    expTime = logN*(6.5*sfdVal*sfdVal/currieVal/60*filmVal);
+    return expTime.toStringAsFixed(4);
   }
-  String sexaGesimal(){
-    double exposeVal = double.tryParse(lnFlutter());
-    double latDegreeFrac = exposeVal;
-    int degrees = latDegreeFrac.toInt();
 
-    double fracDegrees = latDegreeFrac - degrees;
-    double minutFrac = 60 * fracDegrees;
-    int minutes = minutFrac.toInt();
-
-    double fracMinutes = minutFrac - minutes;
-    double secondsFrac = 60 * fracMinutes;
-    int seconds = secondsFrac.toInt().round();
-    String dec2Sexa = '$degrees' + ' Menit'' - '+'$minutes'+' Detik'' - '+'$seconds''Milidetik';
-
-    return dec2Sexa;
+  int meNit;
+  String menitSexaGesimal(){
+   double derajat = double.tryParse(lnFlutter());
+   meNit = derajat.toInt();
+   return meNit.toString();
+  }
+  int seCon;
+  double minutFrac;
+  String detikSexaGesimal(){
+    minutFrac = 60 * (expTime-meNit);
+    seCon = minutFrac.toInt();
+    return seCon.toString();
   }
 
   @override
@@ -499,7 +499,9 @@ class _WaktuPaparanState extends State<WaktuPaparan> {
                   Text('Jarak Sumber ke Film = '+_sfd.text +' Inch',style: LinkEmail),
                   Text('Aktifitas = '+_currie.text +' Currie',style: LinkEmail),
                   Text('Jenis Film = '+_selectedFilm.name +' Faktor = '+_selectedFilm.value.toString(),style: LinkEmail,),
-                  Text('lnFLutter = '+sexaGesimal())
+                  Text('lnFLutter = '+lnFlutter()),
+                  Text('Sexagesimal = '+meNit.toString()+ ' Menit '
+                      + seCon.toString() + ' Detik')
                 ],
               ),
             ),
@@ -512,7 +514,10 @@ class _WaktuPaparanState extends State<WaktuPaparan> {
                   Warna: Colors.redAccent,
                     Label: 'Hitung',
                     Tekan: (){
-
+                    setState(() {
+                      this.displayTest =menitSexaGesimal()+' Menit - '
+                          +detikSexaGesimal()+ ' Detik';
+                    });
                     }),
               ],
             ),
@@ -522,7 +527,7 @@ class _WaktuPaparanState extends State<WaktuPaparan> {
               WarnaBorder: Colors.red,
               Warna: Colors.white,
               WarnaLabel: Colors.red,
-              Label: '0',
+              Label: displayTest,
               displayket: 's',
               WarnaLabelket: Colors.red,
             )

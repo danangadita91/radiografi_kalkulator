@@ -322,18 +322,7 @@ class _WaktuParoState extends State<WaktuParo> {
               ],
             ),
             SizedBox(height: 20),
-            detailDisplay(
-              warna: Colors.red.withOpacity(0.9),
-            detail: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text('Sumber Radiasi'+_selectedJenis.name+ ' = ' + _selectedJenis.value.toString() + ' Hari',style: LinkEmail),
-                Text('Aktivitas = '+_aktivitas.text+ ' Ci', style: LinkEmail),
-                Text('Selisih Tanggal = '+selisihTgl.toString() + ' Hari',style: LinkEmail),
-              ],
-            ),
-            ),
+
             SizedBox(height: 20),
             //Baris 5(Button)
             Row(
