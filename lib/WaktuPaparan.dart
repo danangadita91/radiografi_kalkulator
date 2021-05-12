@@ -488,23 +488,7 @@ class _WaktuPaparanState extends State<WaktuPaparan> {
             //   ),
             // ),
             SizedBox(height: 20),
-            detailDisplay(
-              warna: Colors.red.withOpacity(0.9),
-              detail: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text('Thickness = ' + _thk.text + ' mm',style: LinkEmail),
-                  Text('Teknik Radiografi = '+ _wall.toString() +' Dinding',style: LinkEmail),
-                  Text('Jarak Sumber ke Film = '+_sfd.text +' Inch',style: LinkEmail),
-                  Text('Aktifitas = '+_currie.text +' Currie',style: LinkEmail),
-                  Text('Jenis Film = '+_selectedFilm.name +' Faktor = '+_selectedFilm.value.toString(),style: LinkEmail,),
-                  Text('lnFLutter = '+lnFlutter()),
-                  Text('Sexagesimal = '+meNit.toString()+ ' Menit '
-                      + seCon.toString() + ' Detik')
-                ],
-              ),
-            ),
+
             SizedBox(height: 20),
             //Tombol Hitung
             Row(
@@ -528,8 +512,6 @@ class _WaktuPaparanState extends State<WaktuPaparan> {
               Warna: Colors.white,
               WarnaLabel: Colors.red,
               Label: displayTest,
-              displayket: 's',
-              WarnaLabelket: Colors.red,
             )
           ],
         ),
