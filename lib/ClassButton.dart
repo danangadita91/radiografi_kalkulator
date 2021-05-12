@@ -38,7 +38,7 @@ class Hitung extends StatelessWidget {
 //DiplayBox
 class DisplayBox extends StatelessWidget {
   // ignore: non_constant_identifier_names
-  DisplayBox ({@required this.Warna, this.Label, this.WarnaLabel, this.WarnaBorder, this.displayket, this.WarnaLabelket});
+  DisplayBox ({@required this.Warna, this.Label, this.WarnaLabel, this.WarnaBorder});
   // ignore: non_constant_identifier_names
   final Color Warna;
   // ignore: non_constant_identifier_names
@@ -47,8 +47,6 @@ class DisplayBox extends StatelessWidget {
   final Color WarnaLabel;
   // ignore: non_constant_identifier_names
   final Color WarnaBorder;
-  final String displayket;
-  final Color WarnaLabelket;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -75,15 +73,6 @@ class DisplayBox extends StatelessWidget {
                   color: WarnaLabel),
               textAlign: TextAlign.center,
             ),),
-            Flexible(flex: 1,
-                fit: FlexFit.loose,
-                child: Text(
-                  displayket,
-                  style: GoogleFonts.orbitron(fontSize: 17,
-                      fontWeight: FontWeight.w500,
-                      color: WarnaLabelket),
-                  textAlign: TextAlign.center,
-                ),)
             //Button
           ],
         ),
