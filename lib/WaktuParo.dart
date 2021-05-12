@@ -348,8 +348,6 @@ class _WaktuParoState extends State<WaktuParo> {
               Warna: Colors.white,
                 WarnaBorder: Colors.blue,
                 WarnaLabel: Colors.red,
-              displayket: 'Ci',
-              WarnaLabelket: Colors.red,
             )
           ],
         ),
