@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 export 'package:google_fonts/google_fonts.dart';
 
 const SplashTitleLabel = TextStyle(
@@ -33,6 +34,18 @@ const TextBar = TextStyle(
   fontSize: 22,
   color: Colors.black87,
   fontWeight: FontWeight.w700,
+  fontStyle: FontStyle.italic,
+);
+
+const textDisplay = TextStyle(
+  fontSize: 17,
+  color: Colors.black,
+  fontWeight: FontWeight.bold
+);
+const btnText = TextStyle(
+  fontSize: 24,
+  color: Colors.white,
+  fontWeight: FontWeight.w500,
   fontStyle: FontStyle.italic,
 );
 
@@ -93,6 +106,11 @@ const TextButtons = TextStyle(
   fontSize: 18,
   fontStyle: FontStyle.normal,
   color: Colors.white
+);
+const TextKetTimer = TextStyle(
+  fontSize: 18,
+  fontStyle: FontStyle.normal,
+  fontWeight: FontWeight.bold
 );
 
 

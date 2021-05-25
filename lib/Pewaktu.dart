@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:get/get.dart';
 import 'package:numberpicker/numberpicker.dart';
+import 'package:radiografi_kalkulator/TextStyle.dart';
 import 'ClassButton.dart';
-import 'Cons.dart';
 import 'CustomAppbar.dart';
 import 'DataPipa.dart';
-import 'HomePage.dart';
 import 'WaktuPaparan.dart';
 import 'WaktuParo.dart';
 
@@ -25,7 +25,7 @@ class _PewaktuState extends State<Pewaktu> with TickerProviderStateMixin {
   bool started = true;
   bool stoped = true;
   int timerForTImer = 0;
-  String timetodisplay ='0';
+  // String timetodisplay ='0';
   bool checktimer = true;
   //LocalNotification
   void initState() {
@@ -37,37 +37,51 @@ class _PewaktuState extends State<Pewaktu> with TickerProviderStateMixin {
         android: initializationSettingsAndroid, iOS: initializationSettingsIOs);
     flutterLocalNotificationsPlugin.initialize(initSetttings);
   }
+  void checkButton(){
+    if(hour==0 || min==0 || sec==0){
+      started= false;
+      stoped= false;
+    }
+  }
   //Timer
   void start(){
     setState(() {
       started = false;
-      stoped = false;});
+      stoped = false;
+    });
     timerForTImer = ((hour * 60 * 60)+ (min*60)+ sec);
+    debugPrint(timerForTImer.toString());
     Timer.periodic(Duration(seconds: 1
     ), (Timer t){
       setState(() {
         if(timerForTImer <1 || checktimer == false){
           t.cancel();
-          timetodisplay = '0';
+          tampilJam = '0';
+          tampilMenit = '0';
+          tampilDetik = '0';
           showNotificationMediaStyle();
           Navigator.pushReplacement(context, MaterialPageRoute(
               builder: (context) => Pewaktu()
           ));
         }else if(timerForTImer <60){
-          timetodisplay = timerForTImer.toString();
+          tampilDetik = timerForTImer.toString();
           timerForTImer = timerForTImer -1;
         }else if(timerForTImer < 3600){
           int m = timerForTImer ~/60;
           int s = timerForTImer - (60*m);
-          timetodisplay = m.toString() + ' : '+ s.toString();
+          tampilMenit = m.toString();
+          tampilDetik = s.toString();
           timerForTImer =timerForTImer -1;
         }else{
           int h = timerForTImer ~/3600;
           int t = timerForTImer -(3600*h);
           int m = t ~/ 60;
           int s = t - (60*m);
-          timetodisplay =
-              h.toString() + ':' + m.toString() + ':' + s.toString();
+          tampilJam = h.toString();
+          tampilMenit = m.toString();
+          tampilDetik = s.toString();
+          // timetodisplay =
+          //     h.toString() + ':' + m.toString() + ':' + s.toString();
           timerForTImer = timerForTImer -1;
         }
       });
@@ -75,12 +89,15 @@ class _PewaktuState extends State<Pewaktu> with TickerProviderStateMixin {
   }
   void stop(){
     setState(() {
-      cancelNotification();
       started = true;
       stoped = true;
       checktimer = false;
     });
   }
+
+  String tampilJam = '0';
+  String tampilMenit = '0';
+  String tampilDetik = '0';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -90,39 +107,24 @@ class _PewaktuState extends State<Pewaktu> with TickerProviderStateMixin {
             Padding(padding: EdgeInsets.all(10)),
             //Custom AppBar
             CustomAppBar(
-              WarnaBar: Colors.indigo,
-              Title: 'Pewaktu',
-              BackLogo: Icons.keyboard_backspace,
-              PressBack: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(),
-                    ));
+              bayangan: Colors.indigo,
+              warnaBar: Colors.transparent,
+              judul: 'Pewaktu',
+              logoBalik: Icons.keyboard_backspace,
+              pencetBalik: (){
+                Get.back();
               },
-              LogoBar1: AssetImage('assets/images/pipe.png'),
-              TapBar1: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DataPipa(),
-                    ));
+              logoBar1: AssetImage('assets/images/pipe.png'),
+              tapBar1: (){
+                Get.to(DataPipa());
               },
-              LogoBar2: AssetImage('assets/images/clock.png'),
-              TapBar2: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WaktuPaparan(),
-                    ));
+              logoBar2: AssetImage('assets/images/clock.png'),
+              tapBar2: (){
+                Get.to(WaktuPaparan());
               },
-              LogoBar3: AssetImage('assets/images/half_circle.png'),
-              TapBar3: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WaktuParo(),
-                    ));
+              logoBar3: AssetImage('assets/images/half_circle.png'),
+              tapBar3: (){
+                Get.to(WaktuParo());
               },
             ),
             //Timer Piker
@@ -132,7 +134,7 @@ class _PewaktuState extends State<Pewaktu> with TickerProviderStateMixin {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(25),
                   border: Border.all(color: Colors.indigo.withOpacity(0.8),
-                  width: 5)
+                      width: 5)
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -164,7 +166,7 @@ class _PewaktuState extends State<Pewaktu> with TickerProviderStateMixin {
                   Text('-',
                     textScaleFactor: 4,
                     style: TextStyle(
-                      color: Colors.black
+                        color: Colors.black
                     ),
                   ),
                   //Menit
@@ -193,8 +195,8 @@ class _PewaktuState extends State<Pewaktu> with TickerProviderStateMixin {
                   Text('-',
                     textScaleFactor: 4,
                     style: TextStyle(
-                      color: Colors.black
-                  ),
+                        color: Colors.black
+                    ),
                   ),
                   //Detik
                   Column(
@@ -224,11 +226,13 @@ class _PewaktuState extends State<Pewaktu> with TickerProviderStateMixin {
             ),
             SizedBox(height: 25),
             //Display Timer
-            DisplayBox(
-              WarnaBorder: Colors.indigo,
-              Warna: Colors.white,
-              WarnaLabel: Colors.red,
-              Label: timetodisplay,
+            TampilTimer(
+              warna: Colors.white,
+              warnaBorder: Colors.indigo,
+              warnaLabel: Colors.red,
+              jamTimer: tampilJam,
+              menitTimer: tampilMenit,
+              detikTimer: tampilDetik,
             ),
             SizedBox(height: 30),
             //Button
@@ -238,7 +242,7 @@ class _PewaktuState extends State<Pewaktu> with TickerProviderStateMixin {
                 //Button Start
                 // ignore: deprecated_member_use
                 RaisedButton(
-                  onPressed: started? start :null,
+                  onPressed: started ? start :null,
                   padding: EdgeInsets.symmetric(
                     horizontal: 50,
                     vertical: 17,
@@ -255,7 +259,7 @@ class _PewaktuState extends State<Pewaktu> with TickerProviderStateMixin {
                 //Button Stop
                 // ignore: deprecated_member_use
                 RaisedButton(
-                  onPressed: stoped? null : stop,
+                  onPressed: stoped ? null : stop,
                   padding: EdgeInsets.symmetric(
                     horizontal: 50,
                     vertical: 17,
@@ -302,7 +306,7 @@ class _PewaktuState extends State<Pewaktu> with TickerProviderStateMixin {
     NotificationDetails(iOS: iOSPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
         0, 'Kalkulator Radiografi', 'notification body', platformChannelSpecifics,
-    payload: 'Kalkulator Radiografi Local Notification');
+        payload: 'Kalkulator Radiografi Local Notification');
     showNotification();
   }
   Future<void> cancelNotification() async {
@@ -323,4 +327,3 @@ class _PewaktuState extends State<Pewaktu> with TickerProviderStateMixin {
         payload: 'Kalkulator Radiografi Local Notification');
   }
 }
-

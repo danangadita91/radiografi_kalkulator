@@ -1,13 +1,13 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'ClassButton.dart';
-import 'Cons.dart';
+import 'TextStyle.dart';
 import 'CustomAppbar.dart';
 import 'DataPipa.dart';
-import 'HomePage.dart';
 import 'Pewaktu.dart';
 import 'WaktuPaparan.dart';
-
+import 'package:date_format/date_format.dart';
+import 'package:get/get.dart';
 
 class WaktuParo extends StatefulWidget {
   @override
@@ -15,8 +15,7 @@ class WaktuParo extends StatefulWidget {
 }
 
 class _WaktuParoState extends State<WaktuParo> {
-  //Baris 1
-  //DropDown Jenis Sumber
+  //Baris 1 DropDown Jenis Sumber
   List<ListItem> _dropJenis = [
     ListItem (75, '   Iridium 192 (Ir-192)'),
     ListItem (1934.5, '   Cobalt (Co-60)'),
@@ -27,186 +26,187 @@ class _WaktuParoState extends State<WaktuParo> {
   ];
   List<DropdownMenuItem<ListItem>> _jenisMenuItems;
   ListItem _selectedJenis;
+
   void initState() {
+    _tglAkhirController.text = formatDate(tglAkhir, [d, '-', M, '-',yy]);
+    _tglAkhirController = TextEditingController();
+    _tglAwalController.text = formatDate(tglAwal, [d, '-', M, '-',yy]);
+    _tglAwalController = TextEditingController();
     super.initState();
     _jenisMenuItems = buildDropDownMenuItems(_dropJenis);
     _selectedJenis = _jenisMenuItems[0].value;
   }
+
   List<DropdownMenuItem<ListItem>> buildDropDownMenuItems(List listItems) {
     // ignore: deprecated_member_use
     List<DropdownMenuItem<ListItem>> items = List();
     for (ListItem listItem in listItems) {
       items.add(DropdownMenuItem(
-          child: Text(listItem.name,
-          textAlign: TextAlign.justify,),
+        child: Text(listItem.name, textAlign: TextAlign.justify),
       value: listItem,)
       );
     }
     return items;
   }
-  //Baris 2
-  //Controler Aktifitas
+  //Baris 2 Controler Aktifitas
   TextEditingController _aktivitas =  TextEditingController();
   String ketAktivitas = '';
+
   @override
   void dispose(){
     _aktivitas.dispose();
     super.dispose();
   }
-  //Baris 3
-  //DatePicker 1
-  int selisihTgl = 0;
-  DateTime selectedDate1 = DateTime.now();
-  //Select Date Awal
-  Future<Null> _selectDate1(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
+  //Baris 3 DatePicker 1
+  String setTglAwal= '';
+  FocusNode focusTglAwal = FocusNode();
+  TextEditingController _tglAwalController = TextEditingController();
+  DateTime tglAwal = DateTime.now();
+  Future<Null> _tglAwal(BuildContext context) async {
+    final DateTime picked1 = await showDatePicker(
         context: context,
-        initialDate: selectedDate1,
+        initialDate: tglAwal,
         errorInvalidText: 'Tanggal di Luar Jangkauan',
         errorFormatText: 'Tanggal Salah',
         fieldLabelText: 'Plih Tanggal Awal',
-        fieldHintText: 'Bulan/Hari/Tahun',
+        fieldHintText: 'Hari/Bulan/Tahun',
         helpText: 'Pilih Tanggal Awal',
         cancelText: 'Batal',
         confirmText: 'Set',
         firstDate: DateTime(2015, 8),
         lastDate: DateTime(2101));
-    if (picked != null && picked != selectedDate1)
+    if (picked1 != null && picked1 != tglAwal){
       setState(() {
-        selectedDate1 = picked;
+        tglAwal = picked1;
         dateDiff();
+        _tglAwalController.text = formatDate(tglAwal, [d, '-', M, '-',yyyy]);
       });
+    }
+    if (focusTglAwal != null) {
+      focusTglAwal.nextFocus();
+    }
   }
-  //Baris 4
-  //DatePicker2
-  DateTime selectedDate2 = DateTime.now();
-  //Select Date Akhir
-  Future<Null> _selectDate2(BuildContext context) async {
+  //Baris 4 DatePicker2
+  FocusNode focusTglAkhir = FocusNode();
+  String setTglAkhir= '';
+  TextEditingController _tglAkhirController = TextEditingController();
+  DateTime tglAkhir = DateTime.now();
+  Future<Null> _tglAkhir(BuildContext context) async {
     final DateTime picked2 = await showDatePicker(
         context: context,
-        initialDate: selectedDate2,
+        initialDate: tglAkhir,
         errorInvalidText: 'Tanggal di Luar Jangkauan',
         errorFormatText: 'Tanggal Salah',
-        fieldLabelText: 'Plih Tanggal Akhir',
-        fieldHintText: 'Bulan/Hari/Tahun',
-        helpText: 'Pilih Tanggal Akhir',
+        fieldLabelText: 'Plih Tanggal Awal',
+        fieldHintText: 'Hari/Bulan/Tahun',
+        helpText: 'Pilih Tanggal Awal',
         cancelText: 'Batal',
         confirmText: 'Set',
-        lastDate: DateTime(2101),
-        firstDate: DateTime(2015, 8));
-    if (picked2 != null && picked2 != selectedDate2)
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked2 != null && picked2 != tglAwal){
       setState(() {
-        selectedDate2 = picked2;
+        tglAkhir = picked2;
         dateDiff();
+        _tglAkhirController.text = formatDate(tglAkhir, [d, '-', M, '-',yyyy]);
       });
+    }
   }
+
   //baris 5 button Hitung
+
+  int selisihTgl = 0;
   void dateDiff(){
-    selisihTgl = selectedDate2.difference(selectedDate1).inDays;
+    selisihTgl = tglAkhir.difference(tglAwal).inDays;
   }
-  String calculateDecay() {
+  double half;
+  String waktuParo() {
     double aktivitasVal = double.tryParse(_aktivitas.text) ?? 0;
     double jenisVal = double.tryParse(_selectedJenis.value.toString()) ?? 0;
     double selisih = double.tryParse(selisihTgl.toString()) ?? 0;
-    double _decay = aktivitasVal * (jenisVal / selisih) * 0.5;
-    String result = '$_decay '+' Ci';
-    return result.substring(0,5);
+    double tParo = selisih/jenisVal;
+    half = pow(0.5, tParo)*aktivitasVal;
+    return half.toStringAsFixed(2);
   }
   String display ='0';
 
+  final _formWaktuParo = GlobalKey<FormState>();
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true,
       body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Padding(padding: EdgeInsets.all(15)),
-            //Custom AppBar
-            CustomAppBar(
-              WarnaBar: Colors.blue,
-              Title: 'Waktu Paro',
-              BackLogo: Icons.keyboard_backspace,
-              PressBack: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(),
-                    ));
-              },
-              LogoBar1: AssetImage('assets/images/pipe.png'),
-              TapBar1: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => DataPipa(),
-                    ));
-              },
-              LogoBar2: AssetImage('assets/images/clock.png'),
-              TapBar2: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WaktuPaparan(),
-                    ));
-              },
-              LogoBar3: AssetImage('assets/images/hourglass.png'),
-              TapBar3: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Pewaktu(),
-                    ));
-              },
-            ),
-            SizedBox(height: 15),
-            //Baris 1(Jenis Sumber)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                    padding: EdgeInsets.all(15)),
-                //Text Label
-                Text('Jenis Sumber',
-                    style: FormText),
-                Spacer(),
-                Container(
-                  width: 185,
-                  child: DecoratedBox(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(6),
-                          border: Border.all(color: Colors.grey.withOpacity(0.9),
-                              width: 1)
-                      ),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton<ListItem>(
-                        elevation: 6,
-                        value: _selectedJenis,
-                        items: _jenisMenuItems,
-                        onChanged: (value){
-                          setState(() {
-                            _selectedJenis = value;
-                          });
-                        },
-                      ),
-                      )
+        child: Form(
+          key: _formWaktuParo,
+          child: Column(
+            children: <Widget>[
+              Padding(padding: EdgeInsets.all(15)),
+              //Custom AppBar
+              CustomAppBar(
+                warnaBar: Colors.transparent,
+                bayangan: Colors.blue,
+                judul: 'Waktu Paro',
+                logoBalik: Icons.keyboard_backspace,
+                pencetBalik: (){
+                  Get.back();
+                },
+                logoBar1: AssetImage('assets/images/pipe.png'),
+                tapBar1: (){
+                  Get.to(()=> DataPipa());
+                },
+                logoBar2: AssetImage('assets/images/clock.png'),
+                tapBar2: (){
+                  Get.to(()=> WaktuPaparan());
+                },
+                logoBar3: AssetImage('assets/images/hourglass.png'),
+                tapBar3: (){
+                  Get.to(()=> Pewaktu());
+                },
+              ),
+              SizedBox(height: 15),
+              //Baris 1(Jenis Sumber)
+              Row(
+                children: <Widget>[
+                  Padding(padding: EdgeInsets.all(15)),
+                  //Text Label
+                  Text('Jenis Sumber', style: FormText),
+                  Spacer(),
+                  Container(
+                    width: 190,
+                    child: DecoratedBox(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(color: Colors.grey.withOpacity(0.9),
+                                width: 1)
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<ListItem>(
+                            value: _selectedJenis,
+                            items: _jenisMenuItems,
+                            onChanged: (value){
+                              setState(() {
+                                _selectedJenis = value;
+                              });
+                            },
+                          ),
+                        ),
+                    ),
                   ),
-                ),
-                SizedBox(width: 25),
-              ],
-            ),
-            SizedBox(height: 10),
-            //Baris 2(Aktivitas Awal)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(padding: EdgeInsets.all(15)),
-                //Text Label
-                Text('Aktivitas Awal',
-                    style: FormText),
-                Spacer(),
-                //TextInput
-                Expanded(flex: 2,
+                  SizedBox(width: 25,)
+                ],
+              ),
+              SizedBox(height: 15),
+              //Baris 2(Aktivitas Awal)
+              Row(
+                children: <Widget>[
+                  Padding(padding: EdgeInsets.all(15)),
+                  //Text Label
+                  Text('Aktivitas Awal',
+                      style: FormText),
+                  Spacer(),
+                  //TextInput
+                  Container(
+                    width: 190,
                     child: TextFormField(
+                      textAlign: TextAlign.center,
                       maxLength: 4,
                       controller: _aktivitas,
                       onChanged: (value){
@@ -216,141 +216,153 @@ class _WaktuParoState extends State<WaktuParo> {
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Harus di Isi Angka Yang Valid';
+                          return 'Aktivitas Tidak Boleh Kosong';
                         }
                         return null;
                       },
                       decoration: InputDecoration(
-                        counterText: '',
                         border: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                          borderRadius: BorderRadius.all(Radius.circular(6),
-                          ),
+                          borderRadius: BorderRadius.circular(6),
+                          borderSide: BorderSide(color: Colors.grey.withOpacity(0.9),width: 1)
                         ),
-                        labelText: 'Aktivitas',
-                        suffixText: 'Ci', // Added this
-                        contentPadding: EdgeInsets.all(10),
+                        counterText: '',
+                        hintText: 'Aktivitas',
+                        suffixText: 'Ci',
+                        contentPadding: EdgeInsets.all(8),
                       ), keyboardType: TextInputType.numberWithOptions(
                         decimal: true
                     ),
-                      textInputAction: TextInputAction.done,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.singleLineFormatter,
-                      ],
                       // Only numbers can be entered
                     ),
-                ),
-                SizedBox(width: 25),
-              ],
-            ),
-            SizedBox(height: 15),
-            //Baris 3(Tanggal Awal)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(padding: EdgeInsets.all(15)),
-                //Text Label
-                Text('Tanggal Awal',
-                  style: FormText),
-                Spacer(),
-                //DatePicker
-                Column(
-                  children: <Widget>[
-                    Container(
-                      height: 45,
-                      width: 185,
-                      // ignore: deprecated_member_use
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          side: BorderSide(color: Colors.grey),
-                        ),
-                        onPressed: () => _selectDate1(context),
-                        child: Text('  Pilih Tanggal Awal  ',
-                            style: ShadowText
-                        ),
-                        color: Colors.white,
+                  ),
+                  SizedBox(width: 25),
+                ],
+              ),
+              SizedBox(height: 15),
+              //Baris 3 (Tanggal Awal)
+              Row(
+                children: <Widget>[
+                  SizedBox(width: 28),
+                  Text('Tanggal Awal',
+                      style: FormText),
+                  Spacer(),
+                  Expanded(flex: 2,
+                    child: TextFormField(
+                      onTap: () {
+                        Get.focusScope.requestFocus(FocusNode());
+                        _tglAwal(context);
+                      },
+                      focusNode: focusTglAwal,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.blue),
+                      controller: _tglAwalController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Tanggal Tidak Boleh Kosong';
+                        }
+                        return null;
+                      },
+                      onChanged: (String val){
+                        setState(() {
+                          setTglAwal = val;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Pilih Tanggal',
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey.withOpacity(0.9),width: 1),
+                          borderRadius: BorderRadius.all(Radius.circular(6),
+                          ),
+                        ), // Added this
+                        contentPadding: EdgeInsets.all(10),
                       ),
                     ),
-                    Text("${selectedDate1.toLocal()}".split(' ')[0],
-                      style: TextStyle(
-                        color: Colors.blue
+                  ),
+                  SizedBox(width: 25)
+                ],
+              ),
+              SizedBox(height: 15),
+              //Baris 4(Tanggal Akhir)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(padding: EdgeInsets.all(15)),
+                  //Text Label
+                  Text('Tanggal Akhir',
+                      style: FormText),
+                  Spacer(),
+                  //DatePicker
+                  Expanded(
+                    flex: 2,
+                    child: TextFormField(
+                      onTap: () {
+                        Get.focusScope.requestFocus(FocusNode());
+                        _tglAkhir(context);
+                      },
+                      focusNode: focusTglAkhir,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.blue),
+                      controller: _tglAkhirController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Tanggal Tidak Boleh Kosong';
+                        }
+                        return null;
+                      },
+                      onChanged: (String val){
+                        setState(() {
+                          setTglAkhir = val;
+                        });
+                      },
+                      decoration: InputDecoration(
+                        hintText: 'Pilih Tanggal',
+                        border: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey.withOpacity(0.9),width: 1),
+                          borderRadius: BorderRadius.all(Radius.circular(6),
+                          ),
+                        ), // Added this
+                        contentPadding: EdgeInsets.all(10),
                       ),
                     ),
-                  ],
-                ),
-                SizedBox(width: 25),
-              ],
-            ),
-            SizedBox(height: 15),
-            //Baris 4(Tanggal Akhir)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Padding(padding: EdgeInsets.all(15)),
-                //Text Label
-                Text('Tanggal Akhir',
-                  style: FormText,),
-                Spacer(),
-                //DatePicker
-                Column(
-                  children: <Widget>[
-                    Container(
-                      height: 45,
-                      width: 185,
-                      // ignore: deprecated_member_use
-                      child: RaisedButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5.0),
-                          side: BorderSide(color: Colors.grey),
-                        ),
-                        onPressed: () => _selectDate2(context),
-                        child: Text('  Pilih Tanggal Awal  ',
-                            style: ShadowText
-                        ),
-                        color: Colors.white,
-                      ),
-                    ),
-                    Text("${selectedDate2.toLocal()}".split(' ')[0],
-                      style: TextStyle(
-                          color: Colors.blue
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(width: 25),
-              ],
-            ),
-            SizedBox(height: 20),
-
-            SizedBox(height: 20),
-            //Baris 5(Button)
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Hitung(
-                  Label: 'Hitung',
-                  Tekan: () {
-                    setState(() {
-                      this.display = calculateDecay();
-                    });
-                  },
-                  Warna: Colors.redAccent,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            //DisplayBox
-            DisplayBox(
-              Label: display,
-              Warna: Colors.white,
-                WarnaBorder: Colors.blue,
-                WarnaLabel: Colors.red,
-            )
-          ],
-        ),
+                  ),
+                  SizedBox(width: 25),
+                ],
+              ),
+              SizedBox(height: 40),
+              //Baris 5(Button)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  hitung(
+                    label: 'Hitung',
+                    tekan: () {
+                      if (_formWaktuParo.currentState.validate()) {
+                        Get.snackbar(
+                            'Menghitung Waktu Paro',
+                            'Kalkulator Radiografi',
+                            backgroundColor: Colors.green
+                        );
+                        setState(() {
+                          this.display = waktuParo();
+                        });
+                      }
+                    },
+                  )
+                ],
+              ),
+              SizedBox(
+                height: 40,
+              ),
+              //DisplayBox
+              DiplayCi(
+                  label: display,
+                warna: Colors.transparent,
+                warnaBorder: Colors.blue,
+                warnaLabel: Colors.red,
+              )
+            ],
+          ),
+        )
       ),
     );
   }

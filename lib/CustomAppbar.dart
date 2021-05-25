@@ -1,54 +1,54 @@
 import 'package:flutter/material.dart';
-import 'Cons.dart';
-
+import 'TextStyle.dart';
 
 class CustomAppBar extends StatelessWidget {
-  CustomAppBar ({@required this.Title, this.BackLogo, this.LogoBar1, this.LogoBar2, this.LogoBar3,
-    this.PressBack, this.TapBar1,this.TapBar2,this.TapBar3, this.WarnaBar
+  CustomAppBar ({@required this.judul, this.logoBalik, this.logoBar1, this.logoBar2, this.logoBar3,
+    this.pencetBalik, this.tapBar1,this.tapBar2,this.tapBar3, this.warnaBar, this.bayangan
   });
 
-  final Color WarnaBar;
-  final Function TapBar1;
-  final Function TapBar2;
-  final Function TapBar3;
-  final Function PressBack;
-  final IconData BackLogo;
-  final String Title;
-  final AssetImage LogoBar1;
-  final AssetImage LogoBar2;
-  final AssetImage LogoBar3;
-
+  final String judul;
+  final IconData logoBalik;
+  final AssetImage logoBar1;
+  final AssetImage logoBar2;
+  final AssetImage logoBar3;
+  final Function pencetBalik;
+  final Function tapBar1;
+  final Function tapBar2;
+  final Function tapBar3;
+  final Color warnaBar;
+  final Color bayangan;
 
   @override
   Widget build(BuildContext context) {
-    'alphabet'.toUpperCase(); // 'ALPHABET'
-    'ABC'.toUpperCase();
     return Container(
       height: 50,
       margin: EdgeInsets.all(20),
       padding: EdgeInsets.all(7),
       decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(color: bayangan,offset: Offset(2,2),blurRadius: 10)
+        ],
         borderRadius: BorderRadius.circular(10),
-      color: WarnaBar
+      color: warnaBar
       ),
       child: Row(
         children: <Widget>[
           SizedBox(width: 5),
           GestureDetector(
-            onTap: PressBack,
-            child: Icon(BackLogo,
+            onTap: pencetBalik,
+            child: Icon(logoBalik,
               color: Colors.white,
               size: 30,
             ),
           ),
           SizedBox(width: 7),
-          Text(Title,
+          Text(judul,
           style: TextBar,
           ),
           Spacer(),
           GestureDetector(
-            onTap: TapBar1,
-            child: Image(image: LogoBar1,
+            onTap: tapBar1,
+            child: Image(image: logoBar1,
               height: 30,
               width: 30,
               fit: BoxFit.fill,
@@ -58,8 +58,8 @@ class CustomAppBar extends StatelessWidget {
             width: 10,
           ),
           GestureDetector(
-            onTap: TapBar2,
-            child: Image(image: LogoBar2,
+            onTap: tapBar2,
+            child: Image(image: logoBar2,
               height: 30,
               width: 30,
               fit: BoxFit.fill,
@@ -69,8 +69,8 @@ class CustomAppBar extends StatelessWidget {
             width: 5,
           ),
           GestureDetector(
-            onTap: TapBar3,
-            child: Image(image: LogoBar3,
+            onTap: tapBar3,
+            child: Image(image: logoBar3,
               height: 30,
               width: 30,
               fit: BoxFit.fill,

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'CardDetail.dart';
 import 'CardMenu.dart';
@@ -7,6 +6,7 @@ import 'Pewaktu.dart';
 import 'TentangApp.dart';
 import 'WaktuPaparan.dart';
 import 'package:radiografi_kalkulator/WaktuParo.dart';
+import 'package:get/get.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -14,8 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-  static const snackBarDuration = Duration(seconds: 3);
+  static const snackBarDuration = Duration(seconds: 5);
 
   final snackBar = SnackBar(
     content: Text('Tekan Sekali Lagi Untuk Keluar'),
@@ -43,29 +42,14 @@ class _HomePageState extends State<HomePage> {
                             //Card 1 Waktu Paro
                             GestureDetector(
                               onTap: () {
-                                Navigator.push(context,
-                                    PageRouteBuilder(pageBuilder: (BuildContext context,
-                                          Animation<double> animation, Animation<double> secondaryAnimation,
-                                          ) => WaktuParo(), transitionsBuilder: (
-                                          BuildContext context, Animation<double> animation,
-                                          Animation<double> secondaryAnimation,
-                                          Widget child) => ScaleTransition(scale: Tween<double>(
-                                            begin: 0.0,
-                                            end: 1.0).animate(
-                                            CurvedAnimation(
-                                              parent: animation,
-                                              curve: Curves.fastOutSlowIn,
-                                            )), child: child,
-                                      ),
-                                      transitionDuration: Duration(milliseconds: 100),
-                                    ));
+                                Get.to(()=>WaktuParo());
                               },
                               child: CardMenu(
                                 childCard: CardDetail(
-                                  Warna: Colors.blue,
-                                  Logo: AssetImage('assets/images/half_circle.png'),
-                                  LabelTitle: 'Waktu Paro',
-                                  LabelDetail: 'Waktu Peluruhan\nSumber Radiasi',
+                                  warna: Colors.blue,
+                                  logo: AssetImage('assets/images/half_circle.png'),
+                                  labelTitle: 'Waktu Paro',
+                                  labelDetail: 'Waktu Peluruhan\nSumber Radiasi',
                                 ),
                               ),
                             ),
@@ -73,34 +57,14 @@ class _HomePageState extends State<HomePage> {
                             //Card 2 Data Pipa
                             GestureDetector(
                               onTap: () {
-                                Navigator.push(context,
-                                    PageRouteBuilder(
-                                      pageBuilder: (BuildContext context,
-                                          Animation<double> animation,
-                                          Animation<double> secondaryAnimation,
-                                          ) => DataPipa(),
-                                      transitionsBuilder: (
-                                          BuildContext context, Animation<double> animation,
-                                          Animation<double> secondaryAnimation,
-                                          Widget child) => ScaleTransition(
-                                        scale: Tween<double>(
-                                            begin: 0.0,
-                                            end: 1.0
-                                        ).animate(
-                                            CurvedAnimation(
-                                              parent: animation,
-                                              curve: Curves.fastOutSlowIn,
-                                            )), child: child,
-                                      ),
-                                      transitionDuration: Duration(milliseconds: 1000),
-                                    ));
+                                Get.to(()=> DataPipa());
                               },
                               child: CardMenu(
                                 childCard: CardDetail(
-                                  Warna: Colors.green,
-                                  Logo: AssetImage('assets/images/pipe.png'),
-                                  LabelTitle: 'Data Pipa',
-                                  LabelDetail: 'Data Ketebalan\nPipa',
+                                  warna: Colors.green,
+                                  logo: AssetImage('assets/images/pipe.png'),
+                                  labelTitle: 'Data Pipa',
+                                  labelDetail: 'Data Ketebalan\nPipa',
                                 ),
                               ),
                             ),
@@ -114,34 +78,14 @@ class _HomePageState extends State<HomePage> {
                             //Card 3 Waktu Paparan
                             GestureDetector(
                               onTap: () {
-                                Navigator.push(context,
-                                    PageRouteBuilder(
-                                      pageBuilder: (BuildContext context,
-                                          Animation<double> animation,
-                                          Animation<double> secondaryAnimation,
-                                          ) => WaktuPaparan(),
-                                      transitionsBuilder: (
-                                          BuildContext context, Animation<double> animation,
-                                          Animation<double> secondaryAnimation,
-                                          Widget child) => ScaleTransition(
-                                        scale: Tween<double>(
-                                            begin: 0.0,
-                                            end: 1.0
-                                        ).animate(
-                                            CurvedAnimation(
-                                              parent: animation,
-                                              curve: Curves.fastOutSlowIn,
-                                            )), child: child,
-                                      ),
-                                      transitionDuration: Duration(milliseconds: 1000),
-                                    ));
+                                Get.to(()=> WaktuPaparan());
                               },
                               child: CardMenu(
                                 childCard: CardDetail(
-                                  Warna: Colors.red,
-                                  Logo: AssetImage('assets/images/clock.png'),
-                                  LabelTitle: 'Waktu Penyinaran',
-                                  LabelDetail: 'Hitung Waktu\nPenyinaran',
+                                  warna: Colors.red,
+                                  logo: AssetImage('assets/images/clock.png'),
+                                  labelTitle: 'Waktu Penyinaran',
+                                  labelDetail: 'Hitung Waktu\nPenyinaran',
                                 ),
                               ),
                             ),
@@ -149,34 +93,14 @@ class _HomePageState extends State<HomePage> {
                             //Card 4 Pewaktu
                             GestureDetector(
                               onTap: () {
-                                Navigator.push(context,
-                                    PageRouteBuilder(
-                                      pageBuilder: (BuildContext context,
-                                          Animation<double> animation,
-                                          Animation<double> secondaryAnimation,
-                                          ) => Pewaktu(),
-                                      transitionsBuilder: (
-                                          BuildContext context, Animation<double> animation,
-                                          Animation<double> secondaryAnimation,
-                                          Widget child) => ScaleTransition(
-                                        scale: Tween<double>(
-                                            begin: 0.0,
-                                            end: 1.0
-                                        ).animate(
-                                            CurvedAnimation(
-                                              parent: animation,
-                                              curve: Curves.fastOutSlowIn,
-                                            )), child: child,
-                                      ),
-                                      transitionDuration: Duration(milliseconds: 1000),
-                                    ));
+                                Get.to(()=> Pewaktu());
                               },
                               child: CardMenu(
                                 childCard: CardDetail(
-                                  Warna: Colors.indigo,
-                                  Logo: AssetImage('assets/images/hourglass.png'),
-                                  LabelTitle: 'Pewaktu\nMundur',
-                                  LabelDetail: 'Pewaktu Mundur\nStopWatch',
+                                  warna: Colors.indigo,
+                                  logo: AssetImage('assets/images/hourglass.png'),
+                                  labelTitle: 'Pewaktu\nMundur',
+                                  labelDetail: 'Pewaktu Mundur\nStopWatch',
                                 ),
                               ),
                             ),
@@ -188,35 +112,14 @@ class _HomePageState extends State<HomePage> {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {
-                                Navigator.push(context,
-                                    PageRouteBuilder(
-                                      pageBuilder: (BuildContext context,
-                                          Animation<double> animation,
-                                          Animation<double> secondaryAnimation,
-                                          ) => TentangApp(),
-                                      transitionsBuilder: (
-                                          BuildContext context, Animation<double> animation,
-                                          Animation<double> secondaryAnimation,
-                                          Widget child) => ScaleTransition(
-                                        scale: Tween<double>(
-                                            begin: 0.0,
-                                            end: 1.0
-                                        ).animate(
-                                            CurvedAnimation(
-                                              parent: animation,
-                                              curve: Curves.fastOutSlowIn,
-                                            )), child: child,
-                                      ),
-                                      transitionDuration: Duration(milliseconds: 1000),
-                                    )
-                                );
+                                Get.to(()=> TentangApp());
                               },
                               child: CardMenu(
                                 childCard: CardDetail(
-                                  Warna: Colors.blueGrey,
-                                  Logo: AssetImage('assets/images/about.png'),
-                                  LabelTitle: 'Tentang\nAplikasi',
-                                  LabelDetail: 'Tentang Aplikasi',
+                                  warna: Colors.blueGrey,
+                                  logo: AssetImage('assets/images/about.png'),
+                                  labelTitle: 'Tentang\nAplikasi',
+                                  labelDetail: 'Tentang Aplikasi',
                                 ),
                               ),
                             ),
@@ -237,11 +140,13 @@ class _HomePageState extends State<HomePage> {
     final backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
         backButtonPressTime == null ||
             now.difference(backButtonPressTime) > snackBarDuration;
-
     if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
       backButtonPressTime = now;
-      // ignore: deprecated_member_use
-      Scaffold.of(context).showSnackBar(snackBar);
+      Get.snackbar(
+          'Tekan Sekali Lagi Untuk Keluar Aplikasi',
+          'Kalkulator Radiografi',
+        backgroundColor: Colors.blue
+      );
       return false;
     }
     return true;

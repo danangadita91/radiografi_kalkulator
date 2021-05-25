@@ -1,10 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'Cons.dart';
+import 'TextStyle.dart';
 import 'CustomAppbar.dart';
-import 'HomePage.dart';
 import 'Pewaktu.dart';
 import 'WaktuPaparan.dart';
 import 'WaktuParo.dart';
@@ -19,39 +19,24 @@ class DataPipa extends StatelessWidget {
             Padding(padding: EdgeInsets.all(10)),
             //Custom AppBar
             CustomAppBar(
-              WarnaBar: Colors.green,
-              Title: 'Data Pipa',
-              BackLogo: Icons.keyboard_backspace,
-              PressBack: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(),
-                    ));
+              bayangan: Colors.green,
+              warnaBar: Colors.transparent,
+              judul: 'Data Pipa',
+              logoBalik: Icons.keyboard_backspace,
+              pencetBalik: (){
+                Get.back();
               },
-              LogoBar1: AssetImage('assets/images/half_circle.png'),
-              TapBar1: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WaktuParo(),
-                    ));
+              logoBar1: AssetImage('assets/images/half_circle.png'),
+              tapBar1: (){
+                Get.to(()=> WaktuParo());
               },
-              LogoBar2: AssetImage('assets/images/clock.png'),
-              TapBar2: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WaktuPaparan(),
-                    ));
+              logoBar2: AssetImage('assets/images/clock.png'),
+              tapBar2: (){
+                Get.to(()=> WaktuPaparan());
               },
-              LogoBar3: AssetImage('assets/images/hourglass.png'),
-              TapBar3: (){
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Pewaktu(),
-                    ));
+              logoBar3: AssetImage('assets/images/hourglass.png'),
+              tapBar3: (){
+                Get.to(()=> Pewaktu());
               },
             ),
             //PhotoView

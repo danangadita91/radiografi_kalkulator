@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mailto/mailto.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'Cons.dart';
+import 'TextStyle.dart';
 import 'CustomAppbar.dart';
 import 'HomePage.dart';
 import 'Pewaktu.dart';
@@ -21,34 +20,35 @@ class TentangApp extends StatelessWidget {
             Padding(padding: EdgeInsets.all(10)),
             //Custom AppBar
             CustomAppBar(
-              WarnaBar: Colors.blueGrey,
-              Title: 'Tentang Aplikasi',
-              BackLogo: Icons.keyboard_backspace,
-              PressBack: (){
+              bayangan: Colors.blueGrey,
+              warnaBar: Colors.transparent,
+              judul: 'Tentang Aplikasi',
+              logoBalik: Icons.keyboard_backspace,
+              pencetBalik: (){
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => HomePage(),
                     ));
               },
-              LogoBar1: AssetImage('assets/images/half_circle.png'),
-              TapBar1: (){
+              logoBar1: AssetImage('assets/images/half_circle.png'),
+              tapBar1: (){
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => WaktuParo(),
                     ));
               },
-              LogoBar2: AssetImage('assets/images/clock.png'),
-              TapBar2: (){
+              logoBar2: AssetImage('assets/images/clock.png'),
+              tapBar2: (){
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => WaktuPaparan(),
                     ));
               },
-              LogoBar3: AssetImage('assets/images/hourglass.png'),
-              TapBar3: (){
+              logoBar3: AssetImage('assets/images/hourglass.png'),
+              tapBar3: (){
                 Navigator.push(
                     context,
                     MaterialPageRoute(
